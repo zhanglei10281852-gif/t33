@@ -3,6 +3,7 @@ package com.prison.controller;
 import com.prison.dto.InmateDTO;
 import com.prison.entity.Inmate;
 import com.prison.repository.InmateRepository;
+import com.prison.service.psych.AssessmentTaskService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -22,6 +23,7 @@ import java.util.Map;
 public class InmateController {
 
     private final InmateRepository inmateRepository;
+    private final AssessmentTaskService assessmentTaskService;
 
     @PostMapping
     public ResponseEntity<?> create(@Valid @RequestBody InmateDTO dto) {
@@ -41,6 +43,9 @@ public class InmateController {
         inmate.setWard(dto.getWard());
         inmate.setCellNo(dto.getCellNo());
         Inmate saved = inmateRepository.save(inmate);
+        
+        assessmentTaskService.generateIntakeAssessment(saved.getId());
+        
         return ResponseEntity.status(HttpStatus.CREATED).body(saved);
     }
 
