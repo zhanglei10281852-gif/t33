@@ -117,16 +117,6 @@ public class PsychScaleService {
         Optional<PsychScale> existing = scaleRepository.findByCode("SCL90");
         if (existing.isPresent()) return;
 
-        PsychScale scale = new PsychScale();
-        scale.setName("SCL-90症状自评量表");
-        scale.setCode("SCL90");
-        scale.setDescription("90项症状自评量表，用于评估心理健康状况");
-        scale.setQuestionCount(90);
-        scale.setScaleType("SCL90");
-        scale.setScoringRule("各因子分=对应题目平均分，总分=所有题目得分之和");
-        PsychScale savedScale = scaleRepository.save(scale);
-        Long scaleId = savedScale.getId();
-
         String[] questions = {
             "头痛", "神经过敏，心中不踏实", "头脑中有不必要的想法或字句盘旋", "头昏或昏倒",
             "对异性的兴趣减退", "对旁人责备求全", "感到别人能控制您的思想", "责怪别人制造麻烦",
@@ -175,7 +165,17 @@ public class PsychScaleService {
             "7,16,35,62,77,84,85,87,88,90"
         };
 
-        for (int i = 0; i < 90; i++) {
+        PsychScale scale = new PsychScale();
+        scale.setName("SCL-90症状自评量表");
+        scale.setCode("SCL90");
+        scale.setDescription("90项症状自评量表，用于评估心理健康状况");
+        scale.setQuestionCount(questions.length);
+        scale.setScaleType("SCL90");
+        scale.setScoringRule("各因子分=对应题目平均分，总分=所有题目得分之和");
+        PsychScale savedScale = scaleRepository.save(scale);
+        Long scaleId = savedScale.getId();
+
+        for (int i = 0; i < questions.length; i++) {
             PsychScaleQuestion q = new PsychScaleQuestion();
             q.setScaleId(scaleId);
             q.setQuestionNo(i + 1);
@@ -185,7 +185,7 @@ public class PsychScaleService {
             PsychScaleQuestion savedQ = questionRepository.save(q);
 
             String[] optionTexts = {"没有", "很轻", "中度", "偏重", "严重"};
-            for (int j = 0; j < 5; j++) {
+            for (int j = 0; j < optionTexts.length; j++) {
                 PsychScaleOption opt = new PsychScaleOption();
                 opt.setQuestionId(savedQ.getId());
                 opt.setOptionNo(j + 1);
@@ -209,16 +209,6 @@ public class PsychScaleService {
         Optional<PsychScale> existing = scaleRepository.findByCode("SDS");
         if (existing.isPresent()) return;
 
-        PsychScale scale = new PsychScale();
-        scale.setName("SDS抑郁自评量表");
-        scale.setCode("SDS");
-        scale.setDescription("抑郁自评量表，用于评估抑郁程度");
-        scale.setQuestionCount(20);
-        scale.setScaleType("SDS");
-        scale.setScoringRule("粗分=各题得分之和，标准分=粗分×1.25取整");
-        PsychScale savedScale = scaleRepository.save(scale);
-        Long scaleId = savedScale.getId();
-
         String[] questions = {
             "我感到情绪沮丧，郁闷", "我感到早晨心情最好", "我要哭或想哭",
             "我夜间睡眠不好", "我吃饭像平时一样多", "我的性功能正常",
@@ -231,7 +221,17 @@ public class PsychScaleService {
 
         int[] reverseScores = {0, 1, 0, 0, 1, 1, 0, 0, 0, 0, 1, 1, 0, 1, 0, 1, 1, 1, 0, 1};
 
-        for (int i = 0; i < 20; i++) {
+        PsychScale scale = new PsychScale();
+        scale.setName("SDS抑郁自评量表");
+        scale.setCode("SDS");
+        scale.setDescription("抑郁自评量表，用于评估抑郁程度");
+        scale.setQuestionCount(questions.length);
+        scale.setScaleType("SDS");
+        scale.setScoringRule("粗分=各题得分之和，标准分=粗分×1.25取整");
+        PsychScale savedScale = scaleRepository.save(scale);
+        Long scaleId = savedScale.getId();
+
+        for (int i = 0; i < questions.length; i++) {
             PsychScaleQuestion q = new PsychScaleQuestion();
             q.setScaleId(scaleId);
             q.setQuestionNo(i + 1);
@@ -241,7 +241,7 @@ public class PsychScaleService {
             PsychScaleQuestion savedQ = questionRepository.save(q);
 
             String[] optionTexts = {"没有或很少时间", "小部分时间", "相当多时间", "绝大部分或全部时间"};
-            for (int j = 0; j < 4; j++) {
+            for (int j = 0; j < optionTexts.length; j++) {
                 PsychScaleOption opt = new PsychScaleOption();
                 opt.setQuestionId(savedQ.getId());
                 opt.setOptionNo(j + 1);
@@ -255,16 +255,6 @@ public class PsychScaleService {
     private void initSAS() {
         Optional<PsychScale> existing = scaleRepository.findByCode("SAS");
         if (existing.isPresent()) return;
-
-        PsychScale scale = new PsychScale();
-        scale.setName("SAS焦虑自评量表");
-        scale.setCode("SAS");
-        scale.setDescription("焦虑自评量表，用于评估焦虑程度");
-        scale.setQuestionCount(20);
-        scale.setScaleType("SAS");
-        scale.setScoringRule("粗分=各题得分之和，标准分=粗分×1.25取整");
-        PsychScale savedScale = scaleRepository.save(scale);
-        Long scaleId = savedScale.getId();
 
         String[] questions = {
             "我觉得比平常容易紧张和着急", "我无缘无故地感到害怕", "我容易心里烦乱或觉得惊恐",
@@ -280,7 +270,17 @@ public class PsychScaleService {
 
         int[] reverseScores = {0, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0};
 
-        for (int i = 0; i < 20; i++) {
+        PsychScale scale = new PsychScale();
+        scale.setName("SAS焦虑自评量表");
+        scale.setCode("SAS");
+        scale.setDescription("焦虑自评量表，用于评估焦虑程度");
+        scale.setQuestionCount(questions.length);
+        scale.setScaleType("SAS");
+        scale.setScoringRule("粗分=各题得分之和，标准分=粗分×1.25取整");
+        PsychScale savedScale = scaleRepository.save(scale);
+        Long scaleId = savedScale.getId();
+
+        for (int i = 0; i < questions.length; i++) {
             PsychScaleQuestion q = new PsychScaleQuestion();
             q.setScaleId(scaleId);
             q.setQuestionNo(i + 1);
@@ -290,7 +290,7 @@ public class PsychScaleService {
             PsychScaleQuestion savedQ = questionRepository.save(q);
 
             String[] optionTexts = {"没有或很少时间", "小部分时间", "相当多时间", "绝大部分或全部时间"};
-            for (int j = 0; j < 4; j++) {
+            for (int j = 0; j < optionTexts.length; j++) {
                 PsychScaleOption opt = new PsychScaleOption();
                 opt.setQuestionId(savedQ.getId());
                 opt.setOptionNo(j + 1);
@@ -304,16 +304,6 @@ public class PsychScaleService {
     private void initMMPI() {
         Optional<PsychScale> existing = scaleRepository.findByCode("MMPI");
         if (existing.isPresent()) return;
-
-        PsychScale scale = new PsychScale();
-        scale.setName("MMPI明尼苏达多相人格简版");
-        scale.setCode("MMPI");
-        scale.setDescription("MMPI简版，100道是/否题");
-        scale.setQuestionCount(100);
-        scale.setScaleType("MMPI");
-        scale.setScoringRule("是/否作答，各临床量表计分");
-        PsychScale savedScale = scaleRepository.save(scale);
-        Long scaleId = savedScale.getId();
 
         String[] mmpiQuestions = {
             "我喜欢看机械方面的杂志", "我的胃口很好", "我早上起来的时候，多半觉得睡眠充足、头脑清醒",
@@ -364,10 +354,22 @@ public class PsychScaleService {
             "我喜欢看科学幻想小说", "我觉得自己是一个没用的人",
             "我愿意当一个作家", "我相信我有某种超自然的能力",
             "我喜欢看人物传记", "我有时候觉得自己不像自己了",
-            "我愿意当一个医生", "我觉得我的灵魂有一天会离开我的身体"
+            "我愿意当一个医生", "我觉得我的灵魂有一天会离开我的身体",
+            "我喜欢看关于心理学的书", "我经常感到时间不够用",
+            "我相信努力就会有回报"
         };
 
-        for (int i = 0; i < 100; i++) {
+        PsychScale scale = new PsychScale();
+        scale.setName("MMPI明尼苏达多相人格简版");
+        scale.setCode("MMPI");
+        scale.setDescription("MMPI简版，" + mmpiQuestions.length + "道是/否题");
+        scale.setQuestionCount(mmpiQuestions.length);
+        scale.setScaleType("MMPI");
+        scale.setScoringRule("是/否作答，各临床量表计分");
+        PsychScale savedScale = scaleRepository.save(scale);
+        Long scaleId = savedScale.getId();
+
+        for (int i = 0; i < mmpiQuestions.length; i++) {
             PsychScaleQuestion q = new PsychScaleQuestion();
             q.setScaleId(scaleId);
             q.setQuestionNo(i + 1);
